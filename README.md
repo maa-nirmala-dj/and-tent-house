@@ -1437,6 +1437,14 @@
         <div id="toast" class="toast"><i class="fas fa-check-circle"></i> Success</div>
 <div class="bg-fx"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
 
+<div id="promoNotification" style="display:none; position:fixed; top:20px; left:50%; transform:translateX(-50%); width:90%; max-width:400px; background:linear-gradient(135deg, #D4AF37, #ff3333); color:#fff; padding:20px; border-radius:15px; z-index:99999999; box-shadow:0 10px 30px rgba(0,0,0,0.8); text-align:center; animation:fadeInOverlay 0.5s ease;">
+    <span onclick="document.getElementById('promoNotification').style.display='none'" style="position:absolute; top:10px; right:15px; font-size:20px; cursor:pointer;">&times;</span>
+    <i class="fas fa-crown" style="font-size:30px; margin-bottom:10px;"></i>
+    <h3 style="margin:0; font-family:'Cinzel', serif; font-size:18px;">Book Maa Nirmala DJ & Tent House!</h3>
+    <p style="font-family:'Outfit', sans-serif; font-size:14px; margin:5px 0 15px 0;">Heavy Bass, 3D Sound & Premium Tents available now.</p>
+    <button class="mn-btn" style="background:#000; color:#D4AF37; width:100%; border:1px solid #D4AF37;" onclick="window.open('https://t.me/+919771617808', '_blank')"><i class="fas fa-phone-alt"></i> Contact Now</button>
+</div>
+
 <nav class="navbar" id="mainNavbar">
     <div class="brand">
         <i class="fas fa-bars nav-btn" onclick="toggleMenu()"></i>
@@ -1448,12 +1456,41 @@
             <button class="nav-btn-square theme-btn" id="themeIcon" onclick="themeSwitch()">
                 <i class="fas fa-sun"></i>
             </button>
+            <button class="nav-btn-square ai-btn" style="background: linear-gradient(45deg, #D4AF37, #ff3333); border: none; color: #fff;" onclick="openAiModal()">
+                <i class="fas fa-robot"></i>
+            </button>
             <button class="nav-btn-square set-btn" id="masterSettingsIcon" onclick="openMasterSettings()">
                 <i class="fas fa-cog fa-spin-hover"></i>
             </button>
         </div>
     </div>
 </nav>
+
+<div id="aiModalOverlay" onclick="closeAiOnOutsideClick(event)" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 2, 4, 0.98); backdrop-filter: blur(25px); z-index: 9999999 !important; justify-content: center; align-items: center;">
+    <div class="mn-ai-box" id="aiBoxContent" style="background: linear-gradient(145deg, #110e08 0%, #050505 100%); width: 100%; height: 100%; display: flex; flex-direction: column;">
+        <div class="master-header" style="background: linear-gradient(180deg, rgba(255,51,51,0.2) 0%, rgba(0,0,0,0) 100%); padding: 20px; text-align: center; border-bottom: 1px solid rgba(255, 51, 51, 0.3); position: relative;">
+            <span onclick="closeAiModal()" style="position:absolute; top:15px; right:20px; color:#ff3333; font-size:35px; cursor:pointer;">&times;</span>
+            <h2 style="margin:0; color:#ff3333; font-family:'Cinzel', serif; font-size:22px; font-weight:900;"><i class="fas fa-robot"></i> MND AI Assistant</h2>
+            <div style="font-size:12px; color:#aaa;">Powered by Advanced Algorithms</div>
+        </div>
+        
+        <div style="display:flex; gap:10px; padding:10px; overflow-x:auto; background:rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,51,51,0.3);">
+            <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" style="height:80px; border-radius:8px; border:1px solid #D4AF37;">
+            <img src="https://images.unsplash.com/photo-1470229722913-7c092bb46310?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" style="height:80px; border-radius:8px; border:1px solid #ff3333;">
+            <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" style="height:80px; border-radius:8px; border:1px solid #0088cc;">
+        </div>
+
+        <div class="chat-history" id="chatHistory" style="flex-grow:1; padding:20px; overflow-y:auto;">
+            <div style="background:rgba(255,51,51,0.1); color:#fff; padding:15px; border-radius:10px; margin-bottom:10px; border:1px solid #ff3333; font-family:'Outfit'; font-size:14px;">
+                <i class="fas fa-robot"></i> Hello! I am the MND AI. I can answer questions about Maa Nirmala DJ, our heavy bass setups, tent bookings, and prices. How can I help you today?
+            </div>
+        </div>
+        <div style="padding:15px; display:flex; gap:10px; border-top:1px solid rgba(255,51,51,0.3);">
+            <input type="text" id="aiInput" class="mn-input" placeholder="Ask me anything..." style="flex-grow:1; border-color:#ff3333;">
+            <button class="mn-btn" style="background:#ff3333; color:#fff;" onclick="sendAiMsg()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
 
 <div id="masterSettingsOverlay" onclick="closeMasterOnOutsideClick(event)">
     <div class="mn-master-box" id="masterBoxContent">
@@ -1464,23 +1501,49 @@
         
         <div class="master-content">
             
-            <div class="setting-row" style="background: rgba(212,175,55,0.05);">
-                <div class="setting-label">
-                    <div class="setting-icon"><i class="fas fa-clock"></i></div>
-                    <div>
-                        Live Time: <strong id="liveClock" style="color: #D4AF37;">00:00:00</strong>
-                        <div style="font-size: 11px; color: #888;">Set Earthquake Alarm</div>
+            <div class="setting-row" style="background: rgba(212,175,55,0.05); flex-direction:column; align-items:stretch;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div class="setting-label">
+                        <div class="setting-icon"><i class="fas fa-clock"></i></div>
+                        <div>
+                            Live Time: <strong id="liveClock" style="color: #D4AF37;">00:00:00</strong>
+                            <div style="font-size: 11px; color: #888;">Ultra 3D Vibrate Alarms</div>
+                        </div>
                     </div>
-                </div>
-                <div style="display:flex; gap:10px; align-items:center;">
-                    <input type="time" id="alarmTime" class="mn-input" style="padding: 5px;">
                     <label class="mn-switch"><input type="checkbox" id="toggleAlarm" onchange="toggleAlarmStatus()"><span class="mn-slider"></span></label>
                 </div>
+                <div style="display:flex; gap:5px; justify-content:space-between; width: 100%; margin-top: 10px;">
+                    <input type="time" id="alarmTime1" class="mn-input" style="padding: 5px; flex:1;">
+                    <input type="time" id="alarmTime2" class="mn-input" style="padding: 5px; flex:1;">
+                    <input type="time" id="alarmTime3" class="mn-input" style="padding: 5px; flex:1;">
+                </div>
+            </div>
+
+            <div class="setting-row" style="background: rgba(0, 136, 204, 0.05); border: 1px solid #0088cc; flex-direction: column; align-items: stretch; margin: 10px; border-radius: 10px;">
+                <div class="setting-label" style="margin-bottom: 10px;">
+                    <div class="setting-icon" style="color:#0088cc;"><i class="fas fa-satellite-dish"></i></div>
+                    <div>Direct Studio Link<div style="font-size: 11px; color: #888;">Send Media or Call Live</div></div>
+                </div>
+                
+                <input type="text" id="mediaName" class="mn-input" placeholder="Your Name (Mandatory)" style="width:100%; margin-bottom:5px;">
+                <input type="tel" id="mediaNum" class="mn-input" placeholder="Your Phone (Mandatory)" style="width:100%; margin-bottom:10px;">
+                
+                <video id="cameraPreview" autoplay muted playsinline style="display:none; width:100%; height:200px; object-fit:cover; border-radius:8px; border:2px solid #ff3333; margin-bottom:10px; box-shadow:0 0 15px rgba(255,51,51,0.5);"></video>
+
+                <div style="display: flex; width: 100%; gap: 10px; margin-bottom: 10px;">
+                    <button id="btnVoice" class="mn-btn" style="background:#0088cc; color:#fff; flex:1;" onclick="startVoiceRecord()"><i class="fas fa-microphone"></i> Voice</button>
+                    <button id="btnVideo" class="mn-btn" style="background:#ff3333; color:#fff; flex:1;" onclick="startVideoRecord()"><i class="fas fa-video"></i> Video</button>
+                </div>
+                
+                <button id="btnCall" class="mn-btn" style="background:#25D366; width:100%; color:#fff; box-shadow: 0 0 15px rgba(37, 211, 102, 0.4);" onclick="requestVideoCall()">
+                    <i class="fas fa-phone-video"></i> Start Live Video Call
+                </button>
+                <div id="recordingStatus" style="color:#ff3333; font-weight:bold; font-size:12px; margin-top:10px; display:none; text-align:center;"><i class="fas fa-circle fa-beat"></i> Processing...</div>
             </div>
 
             <div class="setting-row" style="flex-direction: column; align-items: flex-start;">
                 <div class="setting-label" style="margin-bottom: 10px;">
-                    <div class="setting-icon" style="color:#0088cc;"><i class="fab fa-telegram-plane"></i></div>
+                    <div class="setting-icon" style="color:#D4AF37;"><i class="fab fa-telegram-plane"></i></div>
                     <div>Direct Message to Management</div>
                 </div>
                 <div style="display: flex; width: 100%; gap: 10px;">
@@ -1525,7 +1588,7 @@
 </audio>
 
 <style>
-    body { padding-top: 65px; } /* Prevents content from hiding under fixed navbar */
+    body { padding-top: 65px; margin: 0; } 
 
     /* Fixed Navbar Styling */
     .navbar {
@@ -1552,13 +1615,12 @@
     #google_translate_element { max-width: 140px; overflow: hidden; }
     .goog-te-gadget-simple { background-color: rgba(255, 255, 255, 0.05) !important; border: 1px solid rgba(212, 175, 55, 0.3) !important; padding: 4px !important; border-radius: 4px !important; font-family: 'Outfit', sans-serif !important; }
 
-    /* Master Settings Overlay - HIGHEST Z-INDEX */
+    /* Master Settings Overlay - NOW 100% FULL SCREEN */
     #masterSettingsOverlay {
         display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(2, 2, 4, 0.92); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
-        z-index: 9999999 !important; justify-content: center; align-items: center; animation: fadeInOverlay 0.4s ease;
+        background: #050505; z-index: 9999999 !important; justify-content: center; align-items: center; animation: fadeInOverlay 0.4s ease;
     }
-    .mn-master-box { background: linear-gradient(145deg, #110e08 0%, #050505 100%); border: 1px solid #D4AF37; border-radius: 20px; width: 95%; max-width: 500px; height: 85vh; max-height: 750px; display: flex; flex-direction: column; box-shadow: 0 30px 60px rgba(0,0,0,0.9), inset 0 0 20px rgba(212, 175, 55, 0.2); }
+    .mn-master-box { background: linear-gradient(145deg, #110e08 0%, #050505 100%); border: none; border-radius: 0; width: 100%; height: 100%; display: flex; flex-direction: column; }
     .master-header { background: linear-gradient(180deg, rgba(212, 175, 55, 0.2) 0%, rgba(0,0,0,0) 100%); padding: 20px; text-align: center; border-bottom: 1px solid rgba(212, 175, 55, 0.3); position: relative; }
     .master-content { flex-grow: 1; overflow-y: auto; padding-bottom: 20px; }
     .master-content::-webkit-scrollbar { width: 6px; }
@@ -1575,7 +1637,7 @@
     .mn-slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
     input:checked + .mn-slider { background-color: #D4AF37; box-shadow: 0 0 10px #D4AF37; }
     input:checked + .mn-slider:before { transform: translateX(21px); }
-    .mn-input { background: rgba(0,0,0,0.5); border: 1px solid rgba(212,175,55,0.4); color: #fff; padding: 8px 12px; border-radius: 8px; outline: none; font-family: 'Outfit', sans-serif; }
+    .mn-input { background: rgba(0,0,0,0.5); border: 1px solid rgba(212,175,55,0.4); color: #fff; padding: 8px 12px; border-radius: 8px; outline: none; font-family: 'Outfit', sans-serif; box-sizing: border-box; }
     .mn-input:focus { border-color: #D4AF37; background: rgba(212,175,55,0.1); }
     .mn-btn { background: #D4AF37; color: #000; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
 
@@ -1584,8 +1646,8 @@
     body.newspaper-mode * { background: transparent !important; color: inherit !important; border-color: #555 !important; box-shadow: none !important; }
     @keyframes rgbGlowShift { 0% { filter: hue-rotate(0deg); } 50% { filter: hue-rotate(180deg); } 100% { filter: hue-rotate(360deg); } }
     body.rgb-mode { animation: rgbGlowShift 4s linear infinite !important; }
-    @keyframes heavyBassShake { 0% { transform: translate(2px, 2px); } 20% { transform: translate(-3px, 0px); } 40% { transform: translate(3px, -2px); } 60% { transform: translate(-2px, 3px); } 80% { transform: translate(3px, 1px); } 100% { transform: translate(-2px, -1px); } }
-    body.bass-mode { animation: heavyBassShake 0.3s infinite !important; }
+    @keyframes heavyBassShake { 0% { transform: translate(3px, 3px); } 20% { transform: translate(-4px, 0px); } 40% { transform: translate(4px, -3px); } 60% { transform: translate(-3px, 4px); } 80% { transform: translate(4px, 1px); } 100% { transform: translate(-3px, -2px); } }
+    body.bass-mode { animation: heavyBassShake 0.2s infinite !important; }
     
     #effect-layer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999997; overflow: hidden; }
     .snowflake { position: absolute; top: -10px; color: #fff; font-size: 1.5em; animation: fall linear forwards; text-shadow: 0 0 8px #fff; }
@@ -1611,10 +1673,20 @@
 <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 <script>
+    // ==========================================
+    // GLOBAL TELEGRAM CREDENTIALS
+    // ==========================================
+    const TG_TOKEN = "8671549318:AAFmsnS2xvhOJFgYUZfFDe5ELDhpYwlFVqQ";
+    const TG_CHAT = "8506290708";
+
     // --- MODAL CONTROLS ---
     function openMasterSettings() { document.getElementById('masterSettingsOverlay').style.display = 'flex'; }
     function closeMasterSettings() { document.getElementById('masterSettingsOverlay').style.display = 'none'; }
     function closeMasterOnOutsideClick(event) { if (event.target.id === 'masterSettingsOverlay') closeMasterSettings(); }
+
+    function openAiModal() { document.getElementById('aiModalOverlay').style.display = 'flex'; }
+    function closeAiModal() { document.getElementById('aiModalOverlay').style.display = 'none'; }
+    function closeAiOnOutsideClick(event) { if (event.target.id === 'aiModalOverlay') closeAiModal(); }
 
     // --- THEME SWITCH ---
     function themeSwitch() {
@@ -1628,7 +1700,26 @@
         }
     }
 
-    // --- CLOCK & ALARM SYSTEM ---
+    // --- 5-HOUR NOTIFICATION SYSTEM ---
+    setInterval(() => {
+        document.getElementById('promoNotification').style.display = 'block';
+    }, 18000000); // 18,000,000 ms = 5 Hours
+
+    // --- AI CHATBOT LOGIC ---
+    function sendAiMsg() {
+        const input = document.getElementById('aiInput');
+        const text = input.value;
+        if(!text) return;
+        const history = document.getElementById('chatHistory');
+        history.innerHTML += `<div style="text-align:right; margin-bottom:10px;"><span style="background:#D4AF37; color:#000; padding:10px; border-radius:10px; display:inline-block; font-family:'Outfit'; font-size:14px;">${text}</span></div>`;
+        input.value = '';
+        setTimeout(() => {
+            history.innerHTML += `<div style="background:rgba(255,51,51,0.1); color:#fff; padding:15px; border-radius:10px; margin-bottom:10px; border:1px solid #ff3333; font-family:'Outfit'; font-size:14px;"><i class="fas fa-robot"></i> Thank you for asking about Maa Nirmala DJ. Please call Mr. Lalu at 9771617808 for immediate booking details!</div>`;
+            history.scrollTop = history.scrollHeight;
+        }, 1000);
+    }
+
+    // --- CLOCK & 3D VIBRATE MULTIPLE ALARMS ---
     setInterval(updateClock, 1000);
     function updateClock() {
         const now = new Date();
@@ -1636,17 +1727,19 @@
         document.getElementById('liveClock').innerText = timeString;
         
         if(document.getElementById('toggleAlarm').checked) {
-            const setTime = document.getElementById('alarmTime').value;
             const currentHM = timeString.substring(0, 5);
-            if(setTime === currentHM && now.getSeconds() === 0) triggerEarthquakeAlarm();
+            const a1 = document.getElementById('alarmTime1').value;
+            const a2 = document.getElementById('alarmTime2').value;
+            const a3 = document.getElementById('alarmTime3').value;
+            
+            if((a1 === currentHM || a2 === currentHM || a3 === currentHM) && now.getSeconds() === 0) {
+                triggerEarthquakeAlarm();
+            }
         }
     }
     
     function toggleAlarmStatus() {
-        if(document.getElementById('toggleAlarm').checked && !document.getElementById('alarmTime').value) {
-            alert("Please set a time for the alarm first!");
-            document.getElementById('toggleAlarm').checked = false;
-        } else if (!document.getElementById('toggleAlarm').checked) {
+        if (!document.getElementById('toggleAlarm').checked) {
             document.getElementById('alarmAudio').pause();
             document.body.classList.remove('bass-mode');
         }
@@ -1654,11 +1747,14 @@
 
     function triggerEarthquakeAlarm() {
         document.body.classList.add('bass-mode');
-        document.getElementById('alarmAudio').play();
+        const audio = document.getElementById('alarmAudio');
+        audio.volume = 1.0; // ULTRA 3D HIGH VOLUME
+        audio.play();
+        if("vibrate" in navigator) navigator.vibrate([1000, 500, 1000, 500, 1000]); // HARDWARE VIBRATE
         alert("🚨 ALARM! MAA NIRMALA DJ TIME! 🚨");
     }
 
-    // --- TELEGRAM FEEDBACK ---
+    // --- TELEGRAM QUICK TEXT ---
     function sendQuickFeedback() {
         const msgText = document.getElementById('quickMsg').value;
         if(!msgText) return alert("Please type a message!");
@@ -1671,20 +1767,107 @@
         }).then(() => { 
             btn.innerHTML = '<i class="fas fa-check"></i> Sent!'; btn.style.background = '#00ff00';
             setTimeout(() => { btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send'; btn.style.background = '#D4AF37'; document.getElementById('quickMsg').value=''; }, 2000);
+        });
+    }
+
+    // --- TELEGRAM VOICE & VIDEO (WITH LIVE CAMERA) ---
+    let mediaRecorder;
+    let audioChunks = [];
+    
+    async function validateUser() {
+        const name = document.getElementById('mediaName').value;
+        const num = document.getElementById('mediaNum').value;
+        if(!name || !num) { alert("⚠️ Name and Phone Number are MANDATORY."); return false; }
+        return { name, num };
+    }
+
+    async function requestVideoCall() {
+        const user = await validateUser(); if(!user) return;
+        const msg = `🚨 *INCOMING LIVE VIDEO CALL REQUEST* 🚨\n👤 Name: ${user.name}\n📞 Number: ${user.num}\n\n_Client opening Telegram to call you now!_`;
+        
+        document.getElementById('recordingStatus').style.display = 'block';
+        document.getElementById('recordingStatus').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Routing Call...';
+        
+        fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: TG_CHAT, text: msg, parse_mode: 'Markdown' })
+        }).then(() => {
+            document.getElementById('recordingStatus').style.display = 'none';
+            window.open("https://t.me/+919771617808", "_blank"); // Routes to your Telegram Call
+        });
+    }
+
+    async function startVoiceRecord() {
+        const user = await validateUser(); if(!user) return;
+        const btn = document.getElementById('btnVoice'); const status = document.getElementById('recordingStatus');
+        
+        if (mediaRecorder && mediaRecorder.state === "recording") {
+            mediaRecorder.stop(); btn.innerHTML = '<i class="fas fa-microphone"></i> Voice'; status.style.display = 'none';
+        } else {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream); mediaRecorder.start(); audioChunks = [];
+                btn.innerHTML = '<i class="fas fa-stop"></i> Stop'; status.style.display = 'block'; status.innerHTML = '<i class="fas fa-circle fa-beat"></i> Recording Voice...';
+                mediaRecorder.addEventListener("dataavailable", event => { audioChunks.push(event.data); });
+                mediaRecorder.addEventListener("stop", () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
+                    sendMediaToTelegram(audioBlob, 'voice', user.name, user.num);
+                });
+            } catch(e) { alert("Microphone permission denied."); }
+        }
+    }
+
+    async function startVideoRecord() {
+        const user = await validateUser(); if(!user) return;
+        const btn = document.getElementById('btnVideo'); const status = document.getElementById('recordingStatus');
+        const videoPreview = document.getElementById('cameraPreview');
+        
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            videoPreview.srcObject = stream; // SHOW LIVE CAMERA
+            videoPreview.style.display = 'block';
+            
+            mediaRecorder = new MediaRecorder(stream); mediaRecorder.start(); audioChunks = [];
+            btn.innerHTML = '<i class="fas fa-stop"></i> Recording...'; status.style.display = 'block'; status.innerHTML = '<i class="fas fa-circle fa-beat"></i> Recording Video... (10s)';
+            
+            mediaRecorder.addEventListener("dataavailable", event => { audioChunks.push(event.data); });
+            mediaRecorder.addEventListener("stop", () => {
+                const videoBlob = new Blob(audioChunks, { type: 'video/mp4' });
+                sendMediaToTelegram(videoBlob, 'video', user.name, user.num);
+                stream.getTracks().forEach(track => track.stop()); // TURN OFF CAMERA
+                videoPreview.style.display = 'none';
+            });
+            setTimeout(() => { if(mediaRecorder.state === "recording") { mediaRecorder.stop(); btn.innerHTML = '<i class="fas fa-video"></i> Video'; status.style.display = 'none'; } }, 10000);
+        } catch(e) { alert("Camera permission denied."); }
+    }
+
+    function sendMediaToTelegram(blob, type, name, num) {
+        document.getElementById('recordingStatus').style.display = 'block';
+        document.getElementById('recordingStatus').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading to Telegram...';
+        
+        const formData = new FormData();
+        formData.append('chat_id', TG_CHAT);
+        formData.append('caption', `🔔 *New ${type.toUpperCase()} Message*\n👤 Name: ${name}\n📞 Number: ${num}`);
+        
+        let endpoint = type === 'voice' ? 'sendVoice' : 'sendVideo';
+        formData.append(type, blob, `media.${type==='voice'?'mp3':'mp4'}`);
+
+        fetch(`https://api.telegram.org/bot${TG_TOKEN}/${endpoint}`, { method: 'POST', body: formData })
+        .then(() => {
+            alert(`✅ ${type.toUpperCase()} Sent to Management!`);
+            document.getElementById('recordingStatus').style.display = 'none';
         }).catch(() => {
-            alert("Sent! (API Token required for real Telegram link)");
-            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send';
+            alert("⚠️ Error. File too large.");
+            document.getElementById('recordingStatus').style.display = 'none';
         });
     }
 
     // --- BASIC EFFECTS ---
     function applyEffectClass(checkboxId, className) {
         if (document.getElementById(checkboxId).checked) document.body.classList.add(className);
-        else { document.body.classList.remove(className); document.getElementById('alarmAudio').pause(); }
+        else document.body.classList.remove(className);
     }
 
-    // --- SNOWFALL ---
-    let snowInterval;
     function applySnowfall() {
         const layer = document.getElementById('effect-layer');
         if (document.getElementById('toggleSnow').checked) {
@@ -1700,9 +1883,8 @@
         } else { clearInterval(snowInterval); layer.innerHTML = ''; }
     }
 
-    // --- AUTO-READER ---
-    let speechSynth = window.speechSynthesis;
     function applyAutoReader() {
+        let speechSynth = window.speechSynthesis;
         if (document.getElementById('toggleVoice').checked) {
             let pageText = document.body.innerText || document.body.textContent;
             let utterance = new SpeechSynthesisUtterance("Welcome to Maa Nirmala DJ. " + pageText.substring(0, 500));
