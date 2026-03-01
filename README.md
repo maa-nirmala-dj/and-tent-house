@@ -1440,7 +1440,7 @@
         <div id="toast" class="toast"><i class="fas fa-check-circle"></i> Success</div>
 <div class="bg-fx"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
 
-<div id="promoNotification" style="display:none; position:fixed; top:20px; left:50%; transform:translateX(-50%); width:90%; max-width:400px; background:linear-gradient(135deg, #D4AF37, #ff3333); color:#fff; padding:20px; border-radius:15px; z-index:99999999; box-shadow:0 10px 30px rgba(0,0,0,0.8); text-align:center; animation:slideDownFade 0.5s ease;">
+<div id="promoNotification" style="display:none; position:fixed; top:20px; left:50%; transform:translateX(-50%); width:90%; max-width:400px; background:linear-gradient(135deg, #D4AF37, #ff3333); color:#fff; padding:20px; border-radius:15px; z-index:99999999; box-shadow:0 10px 30px rgba(0,0,0,0.8); text-align:center; animation:fadeInOverlay 0.5s ease;">
     <span onclick="document.getElementById('promoNotification').style.display='none'" style="position:absolute; top:10px; right:15px; font-size:20px; cursor:pointer;">&times;</span>
     <i class="fas fa-crown" style="font-size:30px; margin-bottom:10px;"></i>
     <h3 style="margin:0; font-family:'Cinzel', serif; font-size:18px;">Book Maa Nirmala DJ & Tent House!</h3>
@@ -1459,7 +1459,7 @@
             <button class="nav-btn-square theme-btn" id="themeIcon" onclick="themeSwitch()">
                 <i class="fas fa-sun"></i>
             </button>
-            <button class="nav-btn-square ai-btn" onclick="openAiModal()">
+            <button class="nav-btn-square ai-btn" style="background: linear-gradient(45deg, #D4AF37, #ff3333); border: none; color: #fff;" onclick="openAiModal()">
                 <i class="fas fa-robot"></i>
             </button>
             <button class="nav-btn-square set-btn" id="masterSettingsIcon" onclick="openMasterSettings()">
@@ -1469,9 +1469,9 @@
     </div>
 </nav>
 
-<div id="aiModalOverlay" onclick="closeAiOnOutsideClick(event)">
-    <div class="mn-ai-box" id="aiBoxContent">
-        <div class="master-header" style="background: linear-gradient(180deg, rgba(255,51,51,0.2) 0%, rgba(0,0,0,0) 100%);">
+<div id="aiModalOverlay" onclick="closeAiOnOutsideClick(event)" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 2, 4, 0.98); backdrop-filter: blur(25px); z-index: 9999999 !important; justify-content: center; align-items: center;">
+    <div class="mn-ai-box" id="aiBoxContent" style="background: linear-gradient(145deg, #110e08 0%, #050505 100%); width: 100%; height: 100%; display: flex; flex-direction: column;">
+        <div class="master-header" style="background: linear-gradient(180deg, rgba(255,51,51,0.2) 0%, rgba(0,0,0,0) 100%); padding: 20px; text-align: center; border-bottom: 1px solid rgba(255, 51, 51, 0.3); position: relative;">
             <span onclick="closeAiModal()" style="position:absolute; top:15px; right:20px; color:#ff3333; font-size:35px; cursor:pointer;">&times;</span>
             <h2 style="margin:0; color:#ff3333; font-family:'Cinzel', serif; font-size:22px; font-weight:900;"><i class="fas fa-robot"></i> MND AI Assistant</h2>
             <div style="font-size:12px; color:#aaa;">Powered by Advanced Algorithms</div>
@@ -1505,7 +1505,7 @@
         <div class="master-content">
             
             <div class="setting-row" style="background: rgba(212,175,55,0.05); flex-direction:column; align-items:stretch;">
-                <div style="display:flex; justify-content:space-between; width:100%; margin-bottom:10px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
                     <div class="setting-label">
                         <div class="setting-icon"><i class="fas fa-clock"></i></div>
                         <div>
@@ -1515,32 +1515,32 @@
                     </div>
                     <label class="mn-switch"><input type="checkbox" id="toggleAlarm" onchange="toggleAlarmStatus()"><span class="mn-slider"></span></label>
                 </div>
-                <div style="display:flex; gap:10px; justify-content:space-between;">
+                <div style="display:flex; gap:5px; justify-content:space-between; width: 100%; margin-top: 10px;">
                     <input type="time" id="alarmTime1" class="mn-input" style="padding: 5px; flex:1;">
                     <input type="time" id="alarmTime2" class="mn-input" style="padding: 5px; flex:1;">
                     <input type="time" id="alarmTime3" class="mn-input" style="padding: 5px; flex:1;">
                 </div>
             </div>
 
-            <div class="setting-row" style="background: rgba(0, 136, 204, 0.1); border: 1px solid #0088cc; margin: 15px; border-radius: 12px; flex-direction: column;">
-                <div class="setting-label" style="width:100%; margin-bottom: 10px;">
+            <div class="setting-row" style="background: rgba(0, 136, 204, 0.05); border: 1px solid #0088cc; flex-direction: column; align-items: stretch; margin: 10px; border-radius: 10px;">
+                <div class="setting-label" style="margin-bottom: 10px;">
                     <div class="setting-icon" style="color:#0088cc;"><i class="fas fa-satellite-dish"></i></div>
-                    <div>Direct Studio Link<div style="font-size: 11px; color: #aaa;">Send Voice, Video, or Call Live</div></div>
+                    <div>Direct Studio Link<div style="font-size: 11px; color: #888;">Send Media or Call Live</div></div>
                 </div>
+                
                 <input type="text" id="mediaName" class="mn-input" placeholder="Your Name (Mandatory)" style="width:100%; margin-bottom:5px;">
                 <input type="tel" id="mediaNum" class="mn-input" placeholder="Your Phone (Mandatory)" style="width:100%; margin-bottom:10px;">
                 
                 <video id="cameraPreview" autoplay muted playsinline style="display:none; width:100%; height:200px; object-fit:cover; border-radius:8px; border:2px solid #ff3333; margin-bottom:10px; box-shadow:0 0 15px rgba(255,51,51,0.5);"></video>
 
-                <div style="display: flex; width: 100%; gap: 10px; justify-content: space-between; margin-bottom: 10px;">
-                    <button id="btnVoice" class="mn-btn" style="background:#0088cc; flex:1; color:#fff;" onclick="startVoiceRecord()"><i class="fas fa-microphone"></i> Voice</button>
-                    <button id="btnVideo" class="mn-btn" style="background:#ff3333; flex:1; color:#fff;" onclick="startVideoRecord()"><i class="fas fa-video"></i> Video</button>
+                <div style="display: flex; width: 100%; gap: 10px; margin-bottom: 10px;">
+                    <button id="btnVoice" class="mn-btn" style="background:#0088cc; color:#fff; flex:1;" onclick="startVoiceRecord()"><i class="fas fa-microphone"></i> Voice</button>
+                    <button id="btnVideo" class="mn-btn" style="background:#ff3333; color:#fff; flex:1;" onclick="startVideoRecord()"><i class="fas fa-video"></i> Video</button>
                 </div>
                 
                 <button id="btnCall" class="mn-btn" style="background:#25D366; width:100%; color:#fff; box-shadow: 0 0 15px rgba(37, 211, 102, 0.4);" onclick="requestVideoCall()">
-                    <i class="fas fa-video"></i> Start Live Video Call
+                    <i class="fas fa-phone-video"></i> Start Live Video Call
                 </button>
-
                 <div id="recordingStatus" style="color:#ff3333; font-weight:bold; font-size:12px; margin-top:10px; display:none; text-align:center;"><i class="fas fa-circle fa-beat"></i> Processing...</div>
             </div>
 
@@ -1591,7 +1591,7 @@
 </audio>
 
 <style>
-    body { padding-top: 65px; margin: 0; }
+    body { padding-top: 65px; margin: 0; } 
 
     /* Fixed Navbar Styling */
     .navbar {
@@ -1605,33 +1605,26 @@
     .nav-right { display: flex; align-items: center; gap: 8px; }
     .controls { display: flex; gap: 8px; }
     
+    /* Square Buttons */
     .nav-btn-square {
         width: 38px; height: 38px; border-radius: 8px; cursor: pointer;
         display: flex; justify-content: center; align-items: center; font-size: 16px; transition: 0.3s;
     }
     .theme-btn { background: rgba(255,255,255,0.05); border: 1px solid #D4AF37; color: #D4AF37; }
-    .ai-btn { background: linear-gradient(45deg, #D4AF37, #ff3333); border: none; color: #fff; box-shadow: 0 0 15px rgba(212,175,55,0.5); }
     .set-btn { background: rgba(212,175,55,0.15); border: 1px solid #D4AF37; color: #D4AF37; box-shadow: 0 0 10px rgba(212,175,55,0.4); }
     .fa-spin-hover:hover { animation: fa-spin 2s infinite linear; }
 
+    /* Google Translate Fix */
     #google_translate_element { max-width: 140px; overflow: hidden; }
     .goog-te-gadget-simple { background-color: rgba(255, 255, 255, 0.05) !important; border: 1px solid rgba(212, 175, 55, 0.3) !important; padding: 4px !important; border-radius: 4px !important; font-family: 'Outfit', sans-serif !important; }
 
-    /* FULL-SCREEN OVERLAYS (Settings & AI) */
-    #masterSettingsOverlay, #aiModalOverlay {
+    /* Master Settings Overlay - NOW 100% FULL SCREEN */
+    #masterSettingsOverlay {
         display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(2, 2, 4, 0.98); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-        z-index: 9999999 !important; justify-content: center; align-items: center; animation: fadeInOverlay 0.4s ease;
+        background: #050505; z-index: 9999999 !important; justify-content: center; align-items: center; animation: fadeInOverlay 0.4s ease;
     }
-    
-    /* MODALS NOW COVER 100% OF THE SCREEN */
-    .mn-master-box, .mn-ai-box { 
-        background: linear-gradient(145deg, #110e08 0%, #050505 100%); 
-        border: none; border-radius: 0; /* Full screen format */
-        width: 100%; height: 100%; display: flex; flex-direction: column; 
-    }
-    
-    .master-header { padding: 20px; text-align: center; border-bottom: 1px solid rgba(212, 175, 55, 0.3); position: relative; }
+    .mn-master-box { background: linear-gradient(145deg, #110e08 0%, #050505 100%); border: none; border-radius: 0; width: 100%; height: 100%; display: flex; flex-direction: column; }
+    .master-header { background: linear-gradient(180deg, rgba(212, 175, 55, 0.2) 0%, rgba(0,0,0,0) 100%); padding: 20px; text-align: center; border-bottom: 1px solid rgba(212, 175, 55, 0.3); position: relative; }
     .master-content { flex-grow: 1; overflow-y: auto; padding-bottom: 20px; }
     .master-content::-webkit-scrollbar { width: 6px; }
     .master-content::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 10px; }
@@ -1640,13 +1633,14 @@
     .setting-label { display: flex; align-items: center; gap: 15px; color: #fff; font-family: 'Outfit', sans-serif; font-size: 15px; }
     .setting-icon { width: 38px; height: 38px; background: rgba(212, 175, 55, 0.1); border-radius: 10px; display: flex; justify-content: center; align-items: center; color: #D4AF37; font-size: 18px; box-shadow: inset 0 0 5px rgba(212,175,55,0.2); }
 
+    /* Custom Toggles & Inputs */
     .mn-switch { position: relative; display: inline-block; width: 45px; height: 24px; }
     .mn-switch input { opacity: 0; width: 0; height: 0; }
     .mn-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 34px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); }
     .mn-slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
     input:checked + .mn-slider { background-color: #D4AF37; box-shadow: 0 0 10px #D4AF37; }
     input:checked + .mn-slider:before { transform: translateX(21px); }
-    .mn-input { background: rgba(0,0,0,0.5); border: 1px solid rgba(212,175,55,0.4); color: #fff; padding: 8px 12px; border-radius: 8px; outline: none; font-family: 'Outfit', sans-serif; }
+    .mn-input { background: rgba(0,0,0,0.5); border: 1px solid rgba(212,175,55,0.4); color: #fff; padding: 8px 12px; border-radius: 8px; outline: none; font-family: 'Outfit', sans-serif; box-sizing: border-box; }
     .mn-input:focus { border-color: #D4AF37; background: rgba(212,175,55,0.1); }
     .mn-btn { background: #D4AF37; color: #000; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
 
@@ -1661,13 +1655,21 @@
     #effect-layer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999997; overflow: hidden; }
     .snowflake { position: absolute; top: -10px; color: #fff; font-size: 1.5em; animation: fall linear forwards; text-shadow: 0 0 8px #fff; }
     @keyframes fall { to { transform: translateY(105vh); } }
+
+    @media (max-width: 400px) {
+        .brand span { font-size: 1rem; }
+        #google_translate_element { max-width: 110px; }
+        .nav-btn-square { width: 34px; height: 34px; font-size: 14px; }
+    }
 </style>
 
 <script type="text/javascript">
     function googleTranslateElementInit() {
         new google.translate.TranslateElement({
-            pageLanguage: 'en', includedLanguages: 'hi,bho,mai,bn,mr,te,ta,pa,gu,kn,ml,or',
-            layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false
+            pageLanguage: 'en',
+            includedLanguages: 'hi,bho,mai,bn,mr,te,ta,pa,gu,kn,ml,or',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay: false
         }, 'google_translate_element');
     }
 </script>
@@ -1675,26 +1677,29 @@
 
 <script>
     // ==========================================
-    // YOUR LIVE TELEGRAM CREDENTIALS
+    // GLOBAL TELEGRAM CREDENTIALS
     // ==========================================
-    const TG_TOKEN = "8671549318:AAFmsnS2xvhOJFgYUZfFDe5ELDhpYwlFVqQ"; 
+    const TG_TOKEN = "8671549318:AAFmsnS2xvhOJFgYUZfFDe5ELDhpYwlFVqQ";
     const TG_CHAT = "8506290708";
 
     // --- MODAL CONTROLS ---
     function openMasterSettings() { document.getElementById('masterSettingsOverlay').style.display = 'flex'; }
     function closeMasterSettings() { document.getElementById('masterSettingsOverlay').style.display = 'none'; }
     function closeMasterOnOutsideClick(event) { if (event.target.id === 'masterSettingsOverlay') closeMasterSettings(); }
-    
+
     function openAiModal() { document.getElementById('aiModalOverlay').style.display = 'flex'; }
     function closeAiModal() { document.getElementById('aiModalOverlay').style.display = 'none'; }
     function closeAiOnOutsideClick(event) { if (event.target.id === 'aiModalOverlay') closeAiModal(); }
 
+    // --- THEME SWITCH ---
     function themeSwitch() {
         const icon = document.querySelector('#themeIcon i');
         if(icon.classList.contains('fa-sun')) {
-            icon.classList.replace('fa-sun', 'fa-moon'); document.body.style.backgroundColor = '#ffffff'; document.body.style.color = '#000000';
+            icon.classList.replace('fa-sun', 'fa-moon');
+            document.body.style.backgroundColor = '#ffffff'; document.body.style.color = '#000000';
         } else {
-            icon.classList.replace('fa-moon', 'fa-sun'); document.body.style.backgroundColor = '#0a0a0c'; document.body.style.color = '#ffffff';
+            icon.classList.replace('fa-moon', 'fa-sun');
+            document.body.style.backgroundColor = '#0a0a0c'; document.body.style.color = '#ffffff';
         }
     }
 
@@ -1708,18 +1713,16 @@
         const input = document.getElementById('aiInput');
         const text = input.value;
         if(!text) return;
-        
         const history = document.getElementById('chatHistory');
         history.innerHTML += `<div style="text-align:right; margin-bottom:10px;"><span style="background:#D4AF37; color:#000; padding:10px; border-radius:10px; display:inline-block; font-family:'Outfit'; font-size:14px;">${text}</span></div>`;
         input.value = '';
-        
         setTimeout(() => {
             history.innerHTML += `<div style="background:rgba(255,51,51,0.1); color:#fff; padding:15px; border-radius:10px; margin-bottom:10px; border:1px solid #ff3333; font-family:'Outfit'; font-size:14px;"><i class="fas fa-robot"></i> Thank you for asking about Maa Nirmala DJ. Please call Mr. Lalu at 9771617808 for immediate booking details!</div>`;
             history.scrollTop = history.scrollHeight;
         }, 1000);
     }
 
-    // --- CLOCK & 3D VIBRATE ALARM SYSTEM ---
+    // --- CLOCK & 3D VIBRATE MULTIPLE ALARMS ---
     setInterval(updateClock, 1000);
     function updateClock() {
         const now = new Date();
@@ -1748,9 +1751,9 @@
     function triggerEarthquakeAlarm() {
         document.body.classList.add('bass-mode');
         const audio = document.getElementById('alarmAudio');
-        audio.volume = 1.0; // ULTRA HIGH VOLUME
+        audio.volume = 1.0; // ULTRA 3D HIGH VOLUME
         audio.play();
-        if("vibrate" in navigator) navigator.vibrate([1000, 500, 1000, 500, 1000]); // HARDWARE VIBRATION
+        if("vibrate" in navigator) navigator.vibrate([1000, 500, 1000, 500, 1000]); // HARDWARE VIBRATE
         alert("🚨 ALARM! MAA NIRMALA DJ TIME! 🚨");
     }
 
@@ -1783,7 +1786,7 @@
 
     async function requestVideoCall() {
         const user = await validateUser(); if(!user) return;
-        const msg = `🚨 *INCOMING VIDEO CALL REQUEST* 🚨\n👤 Name: ${user.name}\n📞 Number: ${user.num}\n\n_Client opening Telegram to call you now!_`;
+        const msg = `🚨 *INCOMING LIVE VIDEO CALL REQUEST* 🚨\n👤 Name: ${user.name}\n📞 Number: ${user.num}\n\n_Client opening Telegram to call you now!_`;
         
         document.getElementById('recordingStatus').style.display = 'block';
         document.getElementById('recordingStatus').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Routing Call...';
@@ -1872,10 +1875,13 @@
         const layer = document.getElementById('effect-layer');
         if (document.getElementById('toggleSnow').checked) {
             snowInterval = setInterval(() => {
-                const snow = document.createElement('div'); snow.classList.add('snowflake'); snow.innerHTML = '❄️';
-                snow.style.left = Math.random() * 100 + 'vw'; snow.style.animationDuration = Math.random() * 3 + 2 + 's';
+                const snow = document.createElement('div');
+                snow.classList.add('snowflake'); snow.innerHTML = '❄️';
+                snow.style.left = Math.random() * 100 + 'vw';
+                snow.style.animationDuration = Math.random() * 3 + 2 + 's';
                 snow.style.opacity = Math.random(); snow.style.fontSize = (Math.random() * 15 + 10) + 'px';
-                layer.appendChild(snow); setTimeout(() => snow.remove(), 4000);
+                layer.appendChild(snow);
+                setTimeout(() => snow.remove(), 4000);
             }, 100);
         } else { clearInterval(snowInterval); layer.innerHTML = ''; }
     }
@@ -1883,7 +1889,7 @@
     function applyAutoReader() {
         let speechSynth = window.speechSynthesis;
         if (document.getElementById('toggleVoice').checked) {
-            let pageText = document.body.innerText;
+            let pageText = document.body.innerText || document.body.textContent;
             let utterance = new SpeechSynthesisUtterance("Welcome to Maa Nirmala DJ. " + pageText.substring(0, 500));
             utterance.lang = 'hi-IN'; speechSynth.speak(utterance);
             utterance.onend = function() { document.getElementById('toggleVoice').checked = false; }
