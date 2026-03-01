@@ -1437,13 +1437,282 @@
         <div id="toast" class="toast"><i class="fas fa-check-circle"></i> Success</div>
         <div class="bg-fx"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
         
-        <nav class="navbar">
-            <div class="brand"><i class="fas fa-bars nav-btn" onclick="toggleMenu()"></i><span><i class="fas fa-crown"></i> MND Hub</span></div>
-            <div style="display: flex; align-items: center;">
-                <div id="google_translate_element"></div>
-                <div class="controls"><button class="nav-btn" id="themeIcon" onclick="themeSwitch()"><i class="fas fa-sun"></i></button></div>
+        <nav class="navbar" id="mainNavbar">
+    <div class="brand">
+        <i class="fas fa-bars nav-btn" onclick="toggleMenu()"></i>
+        <span><i class="fas fa-crown"></i> MND Hub</span>
+    </div>
+    <div class="nav-right">
+        <div id="google_translate_element"></div>
+        <div class="controls">
+            <button class="nav-btn-square theme-btn" id="themeIcon" onclick="themeSwitch()"><i class="fas fa-sun"></i></button>
+            <button class="nav-btn-square ai-btn" onclick="openAiModal()"><i class="fas fa-robot"></i></button>
+            <button class="nav-btn-square set-btn" id="masterSettingsIcon" onclick="openMasterSettings()"><i class="fas fa-cog fa-spin-hover"></i></button>
+        </div>
+    </div>
+</nav>
+
+<div id="masterSettingsOverlay" onclick="closeMasterOnOutsideClick(event)">
+    <div class="mn-master-box" id="masterBoxContent">
+        <div class="master-header">
+            <span onclick="closeMasterSettings()" style="position:absolute; top:15px; right:20px; color:#D4AF37; font-size:35px; cursor:pointer;">&times;</span>
+            <h2 style="margin:0; color:#D4AF37; font-family:'Cinzel', serif; font-size:22px; font-weight:900;"><i class="fas fa-sliders-h"></i> Master Control</h2>
+        </div>
+        
+        <div class="master-content">
+            
+            <div class="setting-row" style="background: rgba(212,175,55,0.1); border: 1px solid #D4AF37; margin: 10px; border-radius: 12px; flex-direction: column; align-items: stretch;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <div class="setting-label"><div class="setting-icon"><i class="fas fa-headphones"></i></div><div>Maa Nirmala DJ Sets<div style="font-size: 11px; color: #888;">Unlimited 3D Audio</div></div></div>
+                    <label class="mn-switch"><input type="checkbox" id="toggle3DSound" onchange="toggle3DAudio()"><span class="mn-slider"></span></label>
+                </div>
+                <div style="display:flex; gap:10px; justify-content:center;">
+                    <button class="mn-btn" onclick="playPrevTrack()"><i class="fas fa-backward"></i></button>
+                    <button class="mn-btn" id="playPauseBtn" onclick="togglePlay()"><i class="fas fa-play"></i> Play</button>
+                    <button class="mn-btn" onclick="playNextTrack()"><i class="fas fa-forward"></i></button>
+                </div>
+                <div id="trackName" style="text-align:center; color:#D4AF37; font-size:12px; margin-top:10px; font-family:'Outfit';">Track 1: Heavy Bass Mix</div>
             </div>
-        </nav>
+
+            <div class="setting-row" style="background: rgba(0, 136, 204, 0.1); border: 1px solid #0088cc; margin: 10px; border-radius: 12px; flex-direction: column;">
+                <div class="setting-label" style="width:100%; margin-bottom: 10px;">
+                    <div class="setting-icon" style="color:#0088cc;"><i class="fas fa-satellite-dish"></i></div>
+                    <div>Direct Studio Link<div style="font-size: 11px; color: #aaa;">Send Media or Call Management</div></div>
+                </div>
+                <input type="text" id="mediaName" class="mn-input" placeholder="Your Name (Mandatory)" style="width:100%; margin-bottom:5px;">
+                <input type="tel" id="mediaNum" class="mn-input" placeholder="Your Phone (Mandatory)" style="width:100%; margin-bottom:10px;">
+                
+                <div style="display: flex; width: 100%; gap: 10px; justify-content: space-between; margin-bottom: 10px;">
+                    <button id="btnVoice" class="mn-btn" style="background:#0088cc; flex:1;" onclick="startVoiceRecord()"><i class="fas fa-microphone"></i> Voice</button>
+                    <button id="btnVideo" class="mn-btn" style="background:#ff3333; flex:1;" onclick="startVideoRecord()"><i class="fas fa-video"></i> Video (10s)</button>
+                </div>
+                
+                <button id="btnCall" class="mn-btn" style="background:#25D366; width:100%; box-shadow: 0 0 15px rgba(37, 211, 102, 0.4);" onclick="requestVideoCall()">
+                    <i class="fas fa-video"></i> Start Live Video Call
+                </button>
+
+                <div id="recordingStatus" style="color:#ff3333; font-weight:bold; font-size:12px; margin-top:5px; display:none; text-align:center;"><i class="fas fa-circle fa-beat"></i> Processing...</div>
+            </div>
+
+            <div class="setting-row">
+                <div class="setting-label"><div class="setting-icon" style="color:#ff3333;"><i class="fas fa-bullhorn"></i></div><div>Earthquake Bass Mode</div></div>
+                <label class="mn-switch"><input type="checkbox" id="toggleBass" onchange="applyEffectClass('toggleBass', 'bass-mode')"><span class="mn-slider"></span></label>
+            </div>
+            <div class="setting-row">
+                <div class="setting-label"><div class="setting-icon" style="color:#fff;"><i class="fas fa-snowflake"></i></div><div>Magic Snowfall ❄️</div></div>
+                <label class="mn-switch"><input type="checkbox" id="toggleSnow" onchange="applySnowfall()"><span class="mn-slider"></span></label>
+            </div>
+            <div class="setting-row">
+                <div class="setting-label"><div class="setting-icon" style="color:#ccc;"><i class="fas fa-newspaper"></i></div><div>Newspaper Mode</div></div>
+                <label class="mn-switch"><input type="checkbox" id="toggleNewspaper" onchange="applyEffectClass('toggleNewspaper', 'newspaper-mode')"><span class="mn-slider"></span></label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="effect-layer"></div>
+
+<audio id="djPlayer" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+
+<style>
+    body { padding-top: 65px; } 
+    .navbar { position: fixed; top: 0; left: 0; width: 100%; height: 65px; background: rgba(10, 10, 12, 0.95); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); display: flex; justify-content: space-between; align-items: center; padding: 0 15px; border-bottom: 1px solid rgba(212, 175, 55, 0.3); z-index: 1000; box-shadow: 0 5px 20px rgba(0,0,0,0.5); }
+    .brand { display: flex; align-items: center; gap: 10px; color: #D4AF37; font-family: 'Cinzel', serif; font-weight: 900; font-size: 1.2rem; }
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+    .controls { display: flex; gap: 8px; }
+    .nav-btn-square { width: 38px; height: 38px; border-radius: 8px; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 16px; transition: 0.3s; }
+    .theme-btn { background: rgba(255,255,255,0.05); border: 1px solid #D4AF37; color: #D4AF37; }
+    .set-btn { background: rgba(212,175,55,0.15); border: 1px solid #D4AF37; color: #D4AF37; }
+    .ai-btn { background: linear-gradient(45deg, #D4AF37, #ff3333); border: none; color: #fff; box-shadow: 0 0 15px rgba(212,175,55,0.5); }
+    .fa-spin-hover:hover { animation: fa-spin 2s infinite linear; }
+    #google_translate_element { max-width: 140px; overflow: hidden; }
+    .goog-te-gadget-simple { background-color: rgba(255, 255, 255, 0.05) !important; border: 1px solid rgba(212, 175, 55, 0.3) !important; padding: 4px !important; border-radius: 4px !important; font-family: 'Outfit', sans-serif !important; }
+
+    #masterSettingsOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 2, 4, 0.92); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); z-index: 9999999 !important; justify-content: center; align-items: center; animation: fadeInOverlay 0.4s ease; }
+    .mn-master-box { background: linear-gradient(145deg, #110e08 0%, #050505 100%); border: 1px solid #D4AF37; border-radius: 20px; width: 95%; max-width: 500px; height: 85vh; max-height: 750px; display: flex; flex-direction: column; box-shadow: 0 30px 60px rgba(0,0,0,0.9); }
+    .master-header { background: linear-gradient(180deg, rgba(212, 175, 55, 0.2) 0%, rgba(0,0,0,0) 100%); padding: 20px; text-align: center; border-bottom: 1px solid rgba(212, 175, 55, 0.3); position: relative; }
+    .master-content { flex-grow: 1; overflow-y: auto; padding-bottom: 20px; }
+    .master-content::-webkit-scrollbar { width: 6px; }
+    .master-content::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 10px; }
+    .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 25px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s; flex-wrap: wrap; gap: 10px; }
+    .setting-label { display: flex; align-items: center; gap: 15px; color: #fff; font-family: 'Outfit', sans-serif; font-size: 15px; }
+    .setting-icon { width: 38px; height: 38px; background: rgba(212, 175, 55, 0.1); border-radius: 10px; display: flex; justify-content: center; align-items: center; color: #D4AF37; font-size: 18px; }
+
+    .mn-switch { position: relative; display: inline-block; width: 45px; height: 24px; }
+    .mn-switch input { opacity: 0; width: 0; height: 0; }
+    .mn-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 34px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); }
+    .mn-slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+    input:checked + .mn-slider { background-color: #D4AF37; box-shadow: 0 0 10px #D4AF37; }
+    input:checked + .mn-slider:before { transform: translateX(21px); }
+    .mn-input { background: rgba(0,0,0,0.5); border: 1px solid rgba(212,175,55,0.4); color: #fff; padding: 10px; border-radius: 8px; outline: none; font-family: 'Outfit', sans-serif; }
+    .mn-btn { background: #D4AF37; color: #000; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; color: #fff; }
+
+    body.newspaper-mode { background: #f4f1ea !important; color: #222 !important; font-family: 'Georgia', serif !important; }
+    body.newspaper-mode * { background: transparent !important; color: inherit !important; border-color: #555 !important; box-shadow: none !important; }
+    @keyframes heavyBassShake { 0% { transform: translate(2px, 2px); } 20% { transform: translate(-3px, 0px); } 40% { transform: translate(3px, -2px); } 60% { transform: translate(-2px, 3px); } 80% { transform: translate(3px, 1px); } 100% { transform: translate(-2px, -1px); } }
+    body.bass-mode { animation: heavyBassShake 0.3s infinite !important; }
+    #effect-layer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999997; overflow: hidden; }
+    .snowflake { position: absolute; top: -10px; color: #fff; font-size: 1.5em; animation: fall linear forwards; text-shadow: 0 0 8px #fff; }
+    @keyframes fall { to { transform: translateY(105vh); } }
+</style>
+
+<script type="text/javascript">
+    function googleTranslateElementInit() { new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'hi,bho,mai,bn,mr,te,ta,pa,gu,kn,ml,or', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false }, 'google_translate_element'); }
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<script>
+    // ==========================================
+    // YOUR LIVE TELEGRAM CREDENTIALS
+    // ==========================================
+    const TG_BOT_TOKEN = "8671549318:AAFmsnS2xvhOJFgYUZfFDe5ELDhpYwlFVqQ"; 
+    const TG_CHAT_ID = "8506290708";    
+
+    function openMasterSettings() { document.getElementById('masterSettingsOverlay').style.display = 'flex'; }
+    function closeMasterSettings() { document.getElementById('masterSettingsOverlay').style.display = 'none'; }
+    function closeMasterOnOutsideClick(event) { if (event.target.id === 'masterSettingsOverlay') closeMasterSettings(); }
+
+    function themeSwitch() {
+        const icon = document.querySelector('#themeIcon i');
+        if(icon.classList.contains('fa-sun')) { icon.classList.replace('fa-sun', 'fa-moon'); document.body.style.backgroundColor = '#ffffff'; document.body.style.color = '#000000'; } 
+        else { icon.classList.replace('fa-moon', 'fa-sun'); document.body.style.backgroundColor = '#0a0a0c'; document.body.style.color = '#ffffff'; }
+    }
+
+    function applyEffectClass(checkboxId, className) {
+        if (document.getElementById(checkboxId).checked) document.body.classList.add(className);
+        else document.body.classList.remove(className);
+    }
+
+    let snowInterval;
+    function applySnowfall() {
+        const layer = document.getElementById('effect-layer');
+        if (document.getElementById('toggleSnow').checked) {
+            snowInterval = setInterval(() => {
+                const snow = document.createElement('div'); snow.classList.add('snowflake'); snow.innerHTML = '❄️';
+                snow.style.left = Math.random() * 100 + 'vw'; snow.style.animationDuration = Math.random() * 3 + 2 + 's';
+                snow.style.opacity = Math.random(); snow.style.fontSize = (Math.random() * 15 + 10) + 'px';
+                layer.appendChild(snow); setTimeout(() => snow.remove(), 4000);
+            }, 100);
+        } else { clearInterval(snowInterval); layer.innerHTML = ''; }
+    }
+
+    // --- DJ 3D AUDIO SYSTEM ---
+    const tracks = [
+        "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+        "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+        "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+    ];
+    let currentTrack = 0;
+    const player = document.getElementById('djPlayer');
+    
+    function togglePlay() {
+        const btn = document.getElementById('playPauseBtn');
+        if(player.paused) { player.play(); btn.innerHTML = '<i class="fas fa-pause"></i> Pause'; document.body.classList.add('bass-mode'); }
+        else { player.pause(); btn.innerHTML = '<i class="fas fa-play"></i> Play'; document.body.classList.remove('bass-mode'); }
+    }
+    function playNextTrack() { currentTrack = (currentTrack + 1) % tracks.length; player.src = tracks[currentTrack]; document.getElementById('trackName').innerText = `Track ${currentTrack+1}: High Bass Mix`; if(!player.paused) player.play(); }
+    function playPrevTrack() { currentTrack = (currentTrack - 1 + tracks.length) % tracks.length; player.src = tracks[currentTrack]; document.getElementById('trackName').innerText = `Track ${currentTrack+1}: High Bass Mix`; if(!player.paused) player.play(); }
+    
+    function toggle3DAudio() {
+        if(document.getElementById('toggle3DSound').checked) {
+            alert("🎧 3D Surround Sound Enabled! Please wear headphones."); player.volume = 1.0;
+        } else { player.volume = 0.6; }
+    }
+
+    // --- MEDIA RECORDER & TELEGRAM SENDER ---
+    let mediaRecorder;
+    let audioChunks = [];
+    
+    async function validateUser() {
+        const name = document.getElementById('mediaName').value;
+        const num = document.getElementById('mediaNum').value;
+        if(!name || !num) { alert("⚠️ Name and Phone Number are MANDATORY to send messages or start a call."); return false; }
+        return { name, num };
+    }
+
+    // NEW: SMART VIDEO CALL SYSTEM
+    async function requestVideoCall() {
+        const user = await validateUser(); if(!user) return;
+        
+        // 1. Send Emergency Alert to Bot
+        const msg = `🚨 *INCOMING VIDEO CALL REQUEST* 🚨\n👤 Name: ${user.name}\n📞 Number: ${user.num}\n\n_The client is opening Telegram to call you now!_`;
+        
+        document.getElementById('recordingStatus').style.display = 'block';
+        document.getElementById('recordingStatus').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Routing Call...';
+        
+        fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: TG_CHAT_ID, text: msg, parse_mode: 'Markdown' })
+        }).then(() => {
+            document.getElementById('recordingStatus').style.display = 'none';
+            // 2. Redirect Customer to Your Telegram Profile
+            window.open("https://t.me/+919771617808", "_blank");
+        }).catch(() => {
+            alert("Call routing failed. Please try again.");
+            document.getElementById('recordingStatus').style.display = 'none';
+        });
+    }
+
+    async function startVoiceRecord() {
+        const user = await validateUser(); if(!user) return;
+        const btn = document.getElementById('btnVoice'); const status = document.getElementById('recordingStatus');
+        
+        if (mediaRecorder && mediaRecorder.state === "recording") {
+            mediaRecorder.stop(); btn.innerHTML = '<i class="fas fa-microphone"></i> Voice'; status.style.display = 'none';
+        } else {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream); mediaRecorder.start(); audioChunks = [];
+                btn.innerHTML = '<i class="fas fa-stop"></i> Stop'; status.style.display = 'block'; status.innerHTML = '<i class="fas fa-circle fa-beat"></i> Recording Voice... (Click Stop to Send)';
+                mediaRecorder.addEventListener("dataavailable", event => { audioChunks.push(event.data); });
+                mediaRecorder.addEventListener("stop", () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' });
+                    sendMediaToTelegram(audioBlob, 'voice', user.name, user.num);
+                });
+            } catch(e) { alert("Microphone permission denied."); }
+        }
+    }
+
+    async function startVideoRecord() {
+        const user = await validateUser(); if(!user) return;
+        const btn = document.getElementById('btnVideo'); const status = document.getElementById('recordingStatus');
+        
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            mediaRecorder = new MediaRecorder(stream); mediaRecorder.start(); audioChunks = [];
+            btn.innerHTML = '<i class="fas fa-stop"></i> Recording...'; status.style.display = 'block'; status.innerHTML = '<i class="fas fa-circle fa-beat"></i> Recording Video... (Auto stops in 10s)';
+            mediaRecorder.addEventListener("dataavailable", event => { audioChunks.push(event.data); });
+            mediaRecorder.addEventListener("stop", () => {
+                const videoBlob = new Blob(audioChunks, { type: 'video/mp4' });
+                sendMediaToTelegram(videoBlob, 'video', user.name, user.num);
+                stream.getTracks().forEach(track => track.stop());
+            });
+            setTimeout(() => { if(mediaRecorder.state === "recording") mediaRecorder.stop(); btn.innerHTML = '<i class="fas fa-video"></i> Video (10s)'; status.style.display = 'none'; }, 10000);
+        } catch(e) { alert("Camera/Microphone permission denied."); }
+    }
+
+    function sendMediaToTelegram(blob, type, name, num) {
+        document.getElementById('recordingStatus').style.display = 'block';
+        document.getElementById('recordingStatus').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading to Telegram Servers...';
+        
+        const formData = new FormData();
+        formData.append('chat_id', TG_CHAT_ID);
+        formData.append('caption', `🔔 *New ${type.toUpperCase()} Message*\n👤 Name: ${name}\n📞 Number: ${num}`);
+        
+        let endpoint = type === 'voice' ? 'sendVoice' : 'sendVideo';
+        formData.append(type, blob, `media.${type==='voice'?'mp3':'mp4'}`);
+
+        fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/${endpoint}`, { method: 'POST', body: formData })
+        .then(res => res.json())
+        .then(data => {
+            alert(`✅ ${type.toUpperCase()} Sent Successfully to Management!`);
+            document.getElementById('recordingStatus').style.display = 'none';
+        }).catch(err => {
+            alert("⚠️ Network Error. File may be too large.");
+            document.getElementById('recordingStatus').style.display = 'none';
+        });
+    }
+</script>
         
         <div class="container" id="homeSection">
             <div class="profile-wrapper">
